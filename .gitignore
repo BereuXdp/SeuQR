@@ -1,0 +1,18 @@
+# Referências de outras marcas e arquivos pesados (só uso local)
+Referencias/
+Refs Logo/
+
+# Instaladores e mídia pesada
+*.exe
+*.msi
+*.mp4
+
+# Sistema / editor
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.claude/settings.local.json
+
+# Dependências
+node_modules/

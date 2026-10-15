@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Criar conta — SeuQR</title>
+  <meta name="description" content="Crie sua conta SeuQR e gere seu primeiro QR Code dinâmico.">
+  <meta name="theme-color" content="#101c42">
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="/auth.css">
+</head>
+<body class="app">
+  <main class="auth-shell">
+    <section class="auth-side">
+      <a href="/" class="auth-logo" aria-label="SeuQR, página inicial"><img src="/assets/seuqr-logo.svg" alt="SeuQR" width="110" height="32"></a>
+
+      <div class="auth-main">
+        <h1>Crie sua conta</h1>
+        <p>Comece grátis. Faça upgrade quando a operação pedir.</p>
+
+        <form class="form" id="register-form" data-endpoint="/api/auth/register" novalidate>
+          <div class="form-alert" role="alert"></div>
+
+          <fieldset class="f-group f-fieldset">
+            <legend class="f-label">Plano</legend>
+            <div class="plan-pick">
+              <label><input type="radio" name="plan" value="starter" checked><span><b>Starter</b><small>Grátis</small></span></label>
+              <label><input type="radio" name="plan" value="pro"><span><b>Pro</b><small>R$ 49/mês</small></span></label>
+              <label><input type="radio" name="plan" value="business"><span><b>Business</b><small>R$ 149/mês</small></span></label>
+            </div>
+          </fieldset>
+
+          <div class="f-group">
+            <label class="f-label" for="name">Nome</label>
+            <input class="f-input" id="name" name="name" type="text" autocomplete="name" placeholder="Seu nome" required minlength="2">
+            <span class="f-error">Digite seu nome.</span>
+          </div>
+
+          <div class="f-group">
+            <label class="f-label" for="email">E-mail</label>
+            <input class="f-input" id="email" name="email" type="email" autocomplete="email" placeholder="voce@empresa.com" required>
+            <span class="f-error">Digite um e-mail válido.</span>
+          </div>
+
+          <div class="f-group">
+            <label class="f-label" for="password">Senha</label>
+            <div class="f-control f-control--pw">
+              <input class="f-input" id="password" name="password" type="password" autocomplete="new-password" placeholder="Mínimo de 8 caracteres" required minlength="8" data-strength>
+              <button type="button" class="f-toggle" data-toggle-pw aria-label="Mostrar senha">
+                <svg viewBox="0 0 24 24"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/></svg>
+              </button>
+            </div>
+            <div class="strength" data-level="0" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+            <span class="f-hint" data-strength-label>Use letras, números e símbolos.</span>
+            <span class="f-error">A senha precisa ter pelo menos 8 caracteres.</span>
+          </div>
+
+          <div class="f-group">
+            <label class="check"><input type="checkbox" name="terms" required> <span>Li e aceito os <a href="/termos" class="link">Termos de uso</a> e a <a href="/privacidade" class="link">Política de privacidade</a>.</span></label>
+            <span class="f-error">Você precisa aceitar os termos para continuar.</span>
+          </div>
+
+          <button type="submit" class="btn btn--dark btn--submit"><span class="spinner" aria-hidden="true"></span><span class="btn__label" data-submit-label>Criar conta grátis</span></button>
+        </form>
+
+        <p class="auth-switch">Já tem conta? <a href="/login">Entrar</a></p>
+      </div>
+
+      <div class="auth-foot">
+        <span>© <span data-year>2026</span> SeuQR</span>
+        <a href="/">Voltar ao site</a>
+      </div>
+    </section>
+
+    <aside class="auth-art" aria-hidden="true">
+      <div class="auth-art__glow"></div>
+      <div class="art-window">
+        <div class="art-window__bar"><span class="dots"><i></i><i></i><i></i></span><span>seuqr.com/q/sua-campanha</span></div>
+        <div class="art-window__body">
+          <div class="art-qr" data-qr="https://seuqr.com"></div>
+          <div class="art-dest">
+            <small>Seu primeiro QR</small>
+            <strong data-cycle="Cardápio|Promoção|Vídeo|Cadastro">Cardápio</strong>
+            <span class="mono">mude o destino quando quiser</span>
+            <span class="art-badge"><i></i>Ativo</span>
+          </div>
+        </div>
+      </div>
+      <h2>Seu próximo QR<br><span>já pode ser dinâmico.</span></h2>
+      <p>Crie, imprima e edite o destino sem reimprimir nada.</p>
+      <ul class="auth-points">
+        <li>Plano Starter grátis com até 3 QR Codes</li>
+        <li>Download do QR em PNG</li>
+        <li>Upgrade direto pelo painel</li>
+      </ul>
+    </aside>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js" defer></script>
+  <script src="/auth.js" defer></script>
+</body>
+</html>

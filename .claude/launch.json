@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "site",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["--yes", "http-server@14.1.1", "site", "-p", "5500", "-c-1"],
+      "port": 5500
+    },
+    {
+      "name": "logo",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["--yes", "http-server@14.1.1", "logo", "-p", "5501", "-c-1"],
+      "port": 5501
+    }
+  ]
+}

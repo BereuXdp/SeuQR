@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SeuQR — Propostas de Logo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Geist+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0f1115;
+    --paper: #ffffff;
+    --canvas: #f3f5f9;
+    --muted: #5b6470;
+    --line: #e3e8ea;
+    --blue-a: #5897f7;
+    --blue-b: #3872e6;
+  }
+  * { box-sizing: border-box; margin: 0; }
+  body { background: var(--canvas); color: var(--ink); font-family: 'Outfit', system-ui, sans-serif; padding: 48px 16px 96px; }
+  .wrap { max-width: 1200px; margin: 0 auto; }
+  header { margin-bottom: 48px; }
+  .eyebrow { font-family: 'Geist Mono', monospace; font-size: 12px; letter-spacing: .15em; text-transform: uppercase; color: var(--muted); }
+  h1 { font-weight: 600; font-size: clamp(32px, 5vw, 48px); letter-spacing: -.02em; margin-top: 8px; }
+  .concept { background: var(--paper); border: 1px solid var(--line); border-radius: 24px; padding: 32px; margin-bottom: 32px; }
+  .concept h2 { font-size: 24px; font-weight: 600; letter-spacing: -.01em; margin-top: 6px; }
+  .concept p.desc { color: var(--muted); max-width: 640px; margin-top: 8px; line-height: 1.5; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin-top: 24px; }
+  .tile { border-radius: 16px; aspect-ratio: 4/3; display: flex; align-items: center; justify-content: center; gap: 14px; }
+  .tile.light { background: #f6f7f9; }
+  .tile.dark { background: var(--ink); color: #fff; }
+  .tile.aurora { background: radial-gradient(120% 90% at 60% 0%, #c9dbff 0%, #efe4ff 45%, #fff3ec 80%); }
+  .mark { width: 96px; height: 96px; }
+  .lockup { display: flex; align-items: center; gap: 12px; }
+  .lockup svg { width: 44px; height: 44px; }
+  .word { font-size: 40px; letter-spacing: -.03em; line-height: 1; }
+  .word .s { font-weight: 300; }
+  .word .q { font-weight: 700; }
+  .app { width: 120px; height: 120px; }
+  .sizes { display: flex; align-items: end; gap: 20px; margin-top: 20px; color: var(--muted); font-family: 'Geist Mono', monospace; font-size: 11px; }
+  .sizes div { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+  @media (max-width: 520px) { .concept { padding: 20px; } .word { font-size: 32px; } }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <!-- Conceito A: Q formado pelo marcador de canto do QR -->
+    <path id="qa" fill-rule="evenodd" d="M28 0H72A28 28 0 0 1 100 28V100H28A28 28 0 0 1 0 72V28A28 28 0 0 1 28 0Z M28 18H72A10 10 0 0 1 82 28V59H59V82H28A10 10 0 0 1 18 72V28A10 10 0 0 1 28 18Z M39 33H47A6 6 0 0 1 53 39V47A6 6 0 0 1 47 53H39A6 6 0 0 1 33 47V39A6 6 0 0 1 39 33Z"/>
+
+    <!-- Conceito C: grade de QR com seta de redirecionamento -->
+    <g id="qc-glyph" fill="#fff">
+      <path fill-rule="evenodd" d="M21 12H35A9 9 0 0 1 44 21V35A9 9 0 0 1 35 44H21A9 9 0 0 1 12 35V21A9 9 0 0 1 21 12Z M22 22V34H34V22Z"/>
+      <path fill-rule="evenodd" d="M65 12H79A9 9 0 0 1 88 21V35A9 9 0 0 1 79 44H65A9 9 0 0 1 56 35V21A9 9 0 0 1 65 12Z M66 22V34H78V22Z"/>
+      <path fill-rule="evenodd" d="M21 56H35A9 9 0 0 1 44 65V79A9 9 0 0 1 35 88H21A9 9 0 0 1 12 79V65A9 9 0 0 1 21 56Z M22 66V78H34V66Z"/>
+      <rect x="56" y="76" width="12" height="12" rx="3"/>
+      <path d="M64 80L84 60M70 60H84V74" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+
+    <!-- Degradê iridescente (ref. do cubo) -->
+    <linearGradient id="iri-base" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f6fbe4"/>
+      <stop offset=".45" stop-color="#cfdcff"/>
+      <stop offset="1" stop-color="#ffe2d8"/>
+    </linearGradient>
+    <radialGradient id="iri-violet" cx=".15" cy=".9" r=".6">
+      <stop offset="0" stop-color="#f6dcff" stop-opacity=".95"/>
+      <stop offset="1" stop-color="#f6dcff" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="iri-blue" cx=".75" cy=".15" r=".55">
+      <stop offset="0" stop-color="#bcd2ff" stop-opacity=".9"/>
+      <stop offset="1" stop-color="#bcd2ff" stop-opacity="0"/>
+    </radialGradient>
+    <!-- Degradê azul (ref. Reworkd) -->
+    <linearGradient id="blue" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#5897f7"/>
+      <stop offset="1" stop-color="#3872e6"/>
+    </linearGradient>
+    <linearGradient id="tile-dark" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1b1d22"/>
+      <stop offset="1" stop-color="#08090b"/>
+    </linearGradient>
+  </defs>
+</svg>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">SeuQR · Logo</div>
+    <h1>Três direções para a marca</h1>
+  </header>
+
+  <!-- A -->
+  <section class="concept">
+    <div class="eyebrow">Conceito A</div>
+    <h2>Q-Finder</h2>
+    <p class="desc">O marcador de canto do QR vira a letra Q. O canto inferior direito reto é a "perninha" do Q e lembra o balão de fala do cubo. É simples, legível em tamanho pequeno e funciona em uma cor só.</p>
+    <div class="grid">
+      <div class="tile light"><svg class="mark" viewBox="0 0 100 100"><use href="#qa" fill="#0f1115"/></svg></div>
+      <div class="tile dark"><svg class="mark" viewBox="0 0 100 100"><use href="#qa" fill="#fff"/></svg></div>
+      <div class="tile light">
+        <div class="lockup"><svg viewBox="0 0 100 100"><use href="#qa" fill="#0f1115"/></svg><span class="word"><span class="s">seu</span><span class="q">qr</span></span></div>
+      </div>
+      <div class="tile aurora">
+        <div class="lockup"><svg viewBox="0 0 100 100"><use href="#qa" fill="url(#blue)"/></svg><span class="word"><span class="s">seu</span><span class="q">qr</span></span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- B -->
+  <section class="concept">
+    <div class="eyebrow">Conceito B</div>
+    <h2>Q-Finder Iridescente</h2>
+    <p class="desc">A mesma forma do A, no estilo app icon da referência do cubo: um tile escuro com o símbolo em degradê pastel (lilás, azul e pêssego). Serve para o ícone do app, o favicon e o hero do site.</p>
+    <div class="grid">
+      <div class="tile light">
+        <svg class="app" viewBox="0 0 160 160">
+          <rect width="160" height="160" rx="36" fill="url(#tile-dark)"/>
+          <rect x=".5" y=".5" width="159" height="159" rx="35.5" fill="none" stroke="#ffffff" stroke-opacity=".08"/>
+          <g transform="translate(36 36) scale(.88)">
+            <use href="#qa" fill="url(#iri-base)"/>
+            <use href="#qa" fill="url(#iri-violet)"/>
+            <use href="#qa" fill="url(#iri-blue)"/>
+          </g>
+        </svg>
+      </div>
+      <div class="tile dark">
+        <svg class="mark" viewBox="0 0 100 100">
+          <use href="#qa" fill="url(#iri-base)"/>
+          <use href="#qa" fill="url(#iri-violet)"/>
+          <use href="#qa" fill="url(#iri-blue)"/>
+        </svg>
+      </div>
+      <div class="tile dark">
+        <div class="lockup">
+          <svg viewBox="0 0 100 100"><use href="#qa" fill="url(#iri-base)"/><use href="#qa" fill="url(#iri-violet)"/><use href="#qa" fill="url(#iri-blue)"/></svg>
+          <span class="word"><span class="s">seu</span><span class="q">qr</span></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- C -->
+  <section class="concept">
+    <div class="eyebrow">Conceito C</div>
+    <h2>QR Redirect</h2>
+    <p class="desc">Mais próximo da primeira referência: os três marcadores arredondados de um QR, com uma seta ↗ no quarto quadrante. Mostra direto o que o produto faz: o QR redireciona.</p>
+    <div class="grid">
+      <div class="tile light"><svg class="mark" viewBox="0 0 100 100"><rect width="100" height="100" rx="24" fill="#0f1115"/><use href="#qc-glyph"/></svg></div>
+      <div class="tile light"><svg class="mark" viewBox="0 0 100 100"><rect width="100" height="100" rx="24" fill="url(#blue)"/><use href="#qc-glyph"/></svg></div>
+      <div class="tile light">
+        <div class="lockup"><svg viewBox="0 0 100 100"><rect width="100" height="100" rx="24" fill="#0f1115"/><use href="#qc-glyph"/></svg><span class="word"><span class="s">seu</span><span class="q">qr</span></span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Teste de tamanho -->
+  <section class="concept">
+    <div class="eyebrow">Teste</div>
+    <h2>Tamanhos pequenos (favicon)</h2>
+    <div class="sizes">
+      <div><svg width="16" height="16" viewBox="0 0 100 100"><use href="#qa" fill="#0f1115"/></svg>A 16</div>
+      <div><svg width="32" height="32" viewBox="0 0 100 100"><use href="#qa" fill="#0f1115"/></svg>A 32</div>
+      <div><svg width="48" height="48" viewBox="0 0 100 100"><use href="#qa" fill="#0f1115"/></svg>A 48</div>
+      <div><svg width="16" height="16" viewBox="0 0 100 100"><rect width="100" height="100" rx="24" fill="#0f1115"/><use href="#qc-glyph"/></svg>C 16</div>
+      <div><svg width="32" height="32" viewBox="0 0 100 100"><rect width="100" height="100" rx="24" fill="#0f1115"/><use href="#qc-glyph"/></svg>C 32</div>
+      <div><svg width="48" height="48" viewBox="0 0 100 100"><rect width="100" height="100" rx="24" fill="#0f1115"/><use href="#qc-glyph"/></svg>C 48</div>
+    </div>
+  </section>
+</div>
+</body>
+</html>

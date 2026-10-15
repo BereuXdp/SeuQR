@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pagamento — SeuQR</title>
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#101c42">
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="/auth.css">
+</head>
+<body class="app">
+  <header class="co-top">
+    <a href="/" aria-label="SeuQR, página inicial"><img src="/assets/seuqr-logo.svg" alt="SeuQR" width="110" height="32"></a>
+    <span class="co-secure">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10.5" width="14" height="10" rx="2.5"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/></svg>
+      <span>Pagamento seguro</span>
+    </span>
+  </header>
+
+  <main class="co-shell">
+    <!-- Coluna do pagamento -->
+    <section class="co-card">
+      <div id="checkout-flow">
+        <div class="steps-bar" aria-label="Etapas">
+          <span class="is-done"><b>✓</b>Conta</span><hr>
+          <span class="is-current" aria-current="step"><b>2</b>Pagamento</span><hr>
+          <span><b>3</b>Pronto</span>
+        </div>
+
+        <h1>Finalize sua assinatura</h1>
+        <p>Escolha como prefere pagar. Você pode trocar de plano depois, pelo painel.</p>
+
+        <form id="checkout-form" data-endpoint="/api/billing/subscribe" novalidate>
+          <div class="co-section">
+            <h2>Forma de pagamento</h2>
+            <div class="pay-tabs" role="tablist" aria-label="Forma de pagamento">
+              <button type="button" role="tab" id="tab-card" aria-controls="panel-card" aria-selected="true" data-method="card">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="5" width="19" height="14" rx="3"/><path d="M2.5 10h19M6.5 15h4"/></svg>Cartão de crédito
+              </button>
+              <button type="button" role="tab" id="tab-pix" aria-controls="panel-pix" aria-selected="false" data-method="pix" tabindex="-1">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l9 9-9 9-9-9z"/><path d="M8.5 12h7"/></svg>Pix
+              </button>
+            </div>
+
+            <!-- Cartão -->
+            <div class="pay-panel" id="panel-card" role="tabpanel" aria-labelledby="tab-card">
+              <div class="card-preview" aria-hidden="true">
+                <div class="card-preview__top"><span class="card-preview__chip"></span><span class="card-preview__brand" data-card-brand>Cartão</span></div>
+                <div class="card-preview__number" data-card-number>•••• •••• •••• ••••</div>
+                <div class="card-preview__bottom">
+                  <div><small>Titular</small><span data-card-name>Seu nome</span></div>
+                  <div><small>Validade</small><span data-card-exp>MM/AA</span></div>
+                </div>
+              </div>
+
+              <div class="form">
+                <div class="f-group">
+                  <label class="f-label" for="cc-number">Número do cartão</label>
+                  <input class="f-input mono" id="cc-number" name="cc-number" inputmode="numeric" autocomplete="cc-number" placeholder="0000 0000 0000 0000" maxlength="23" data-validate="card">
+                  <span class="f-error">Confira o número do cartão.</span>
+                </div>
+                <div class="f-group">
+                  <label class="f-label" for="cc-name">Nome impresso no cartão</label>
+                  <input class="f-input" id="cc-name" name="cc-name" autocomplete="cc-name" placeholder="Como está no cartão" data-validate="required">
+                  <span class="f-error">Digite o nome do titular.</span>
+                </div>
+                <div class="f-row f-row--keep">
+                  <div class="f-group">
+                    <label class="f-label" for="cc-exp">Validade</label>
+                    <input class="f-input mono" id="cc-exp" name="cc-exp" inputmode="numeric" autocomplete="cc-exp" placeholder="MM/AA" maxlength="5" data-validate="exp">
+                    <span class="f-error">Validade inválida.</span>
+                  </div>
+                  <div class="f-group">
+                    <label class="f-label" for="cc-cvc">CVV</label>
+                    <input class="f-input mono" id="cc-cvc" name="cc-cvc" inputmode="numeric" autocomplete="cc-csc" placeholder="123" maxlength="4" data-validate="cvc">
+                    <span class="f-error">CVV inválido.</span>
+                  </div>
+                </div>
+                <div class="f-group">
+                  <label class="f-label" for="doc">CPF ou CNPJ</label>
+                  <input class="f-input mono" id="doc" name="doc" inputmode="numeric" placeholder="000.000.000-00" maxlength="18" data-validate="doc">
+                  <span class="f-hint">Usado na nota fiscal.</span>
+                  <span class="f-error">CPF ou CNPJ inválido.</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Pix -->
+            <div class="pay-panel" id="panel-pix" role="tabpanel" aria-labelledby="tab-pix" hidden>
+              <ol class="pix-steps">
+                <li>Gere o código Pix abaixo.</li>
+                <li>Abra o app do seu banco e escaneie o QR ou cole o código.</li>
+                <li>A assinatura é ativada assim que o pagamento for confirmado.</li>
+              </ol>
+              <div class="form" style="margin-top:20px">
+                <div class="f-group">
+                  <label class="f-label" for="doc-pix">CPF ou CNPJ</label>
+                  <input class="f-input mono" id="doc-pix" name="doc-pix" inputmode="numeric" placeholder="000.000.000-00" maxlength="18" data-validate="doc">
+                  <span class="f-hint">Usado na nota fiscal.</span>
+                  <span class="f-error">CPF ou CNPJ inválido.</span>
+                </div>
+              </div>
+              <div class="pix-box" id="pix-box" hidden style="margin-top:20px">
+                <div class="pix-qr" id="pix-qr" role="img" aria-label="QR Code Pix"></div>
+                <div>
+                  <strong>Escaneie para pagar</strong>
+                  <p class="f-hint" style="margin-top:4px">Ou copie o código Pix:</p>
+                  <div class="pix-code">
+                    <input type="text" id="pix-code" readonly aria-label="Código Pix copia e cola">
+                    <button type="button" class="btn btn--outline" id="pix-copy">Copiar</button>
+                  </div>
+                  <p class="demo-note">Código de demonstração: ainda não gera cobrança real.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="co-section">
+            <div class="form-alert" role="alert"></div>
+            <button type="submit" class="btn btn--dark btn--submit" style="margin-top:4px"><span class="spinner" aria-hidden="true"></span><span class="btn__label" data-pay-label>Assinar Pro · R$ 49/mês</span></button>
+            <p class="f-hint" style="margin-top:12px;text-align:center">Cobrança mensal recorrente. Ao assinar, você concorda com os <a href="/termos" class="link">Termos de uso</a>.</p>
+          </div>
+        </form>
+      </div>
+
+      <!-- Sucesso -->
+      <div class="success" id="checkout-success" hidden>
+        <div class="steps-bar" aria-label="Etapas" style="justify-content:center">
+          <span class="is-done"><b>✓</b>Conta</span><hr>
+          <span class="is-done"><b>✓</b>Pagamento</span><hr>
+          <span class="is-current" aria-current="step"><b>3</b>Pronto</span>
+        </div>
+        <div class="success__icon"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
+        <h1>Assinatura ativada!</h1>
+        <p data-success-text>Seu plano Pro já está liberado. Bora criar o próximo QR?</p>
+        <a href="/dashboard" class="btn btn--dark btn--lg">Ir para o painel</a>
+      </div>
+    </section>
+
+    <!-- Resumo do pedido -->
+    <aside class="summary" aria-label="Resumo do pedido">
+      <span class="eyebrow">Resumo do pedido</span>
+      <nav class="plan-switch" aria-label="Trocar plano">
+        <a href="?plan=pro" data-plan-link="pro">Pro</a>
+        <a href="?plan=business" data-plan-link="business">Business</a>
+      </nav>
+      <div class="summary__plan">
+        <h2 data-plan-name>Pro</h2>
+        <div class="summary__price" data-plan-price>R$ 49<small>/mês</small></div>
+      </div>
+      <p class="summary__desc" data-plan-desc>Para negócios que precisam editar campanhas em tempo real.</p>
+      <ul class="summary__list" data-plan-features>
+        <li>QR Codes ilimitados</li>
+        <li>Estatísticas avançadas</li>
+        <li>Prioridade no suporte</li>
+      </ul>
+      <div class="summary__rows">
+        <div><span>Plano <span data-plan-name-inline>Pro</span> (mensal)</span><span data-plan-subtotal>R$ 49,00</span></div>
+        <div class="total"><span>Total hoje</span><span data-plan-total>R$ 49,00</span></div>
+      </div>
+      <p class="summary__note">Prefere começar sem pagar? <a href="/register?plan=starter" class="link" style="color:#9fc2ff">Use o plano Starter grátis</a>.</p>
+    </aside>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js" defer></script>
+  <script src="/auth.js" defer></script>
+</body>
+</html>

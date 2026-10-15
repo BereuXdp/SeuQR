@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SeuQR — Marca</title>
+<link rel="icon" href="svg/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&family=Geist+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root { --ink: #0f1115; --canvas: #f3f5f9; --muted: #5b6470; --line: #e3e8ea; }
+  * { box-sizing: border-box; margin: 0; }
+  body { background: var(--canvas); color: var(--ink); font-family: 'Outfit', system-ui, sans-serif; padding: 48px 16px 96px; }
+  .wrap { max-width: 1200px; margin: 0 auto; }
+  .eyebrow { font-family: 'Geist Mono', monospace; font-size: 12px; letter-spacing: .15em; text-transform: uppercase; color: var(--muted); }
+  h1 { font-weight: 600; font-size: clamp(32px, 5vw, 48px); letter-spacing: -.02em; margin: 8px 0 40px; }
+  section { background: #fff; border: 1px solid var(--line); border-radius: 24px; padding: 32px; margin-bottom: 24px; }
+  h2 { font-size: 22px; font-weight: 600; margin: 6px 0 20px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+  figure { border-radius: 16px; min-height: 200px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; padding: 24px; }
+  figure.light { background: #f6f7f9; }
+  figure.dark { background: var(--ink); color: #c9ced6; }
+  figure.aurora { background: radial-gradient(120% 90% at 60% 0%, #c9dbff 0%, #efe4ff 45%, #fff3ec 80%); }
+  figcaption { font-family: 'Geist Mono', monospace; font-size: 11px; color: inherit; opacity: .7; }
+  .logo { width: min(260px, 100%); }
+  .mark { width: 88px; }
+  .icon { width: 120px; }
+  .sizes { display: flex; align-items: end; gap: 20px; flex-wrap: wrap; }
+  .sizes img { image-rendering: auto; }
+  .colors { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; }
+  .sw { border-radius: 12px; height: 88px; padding: 12px; display: flex; align-items: end; font-family: 'Geist Mono', monospace; font-size: 11px; border: 1px solid var(--line); }
+  @media (max-width: 520px) { section { padding: 20px; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="eyebrow">SeuQR · Identidade</div>
+  <h1>Logo Q-Finder</h1>
+
+  <section>
+    <div class="eyebrow">Logo principal</div>
+    <h2>Lockup</h2>
+    <div class="grid">
+      <figure class="light"><img class="logo" src="svg/seuqr-logo.svg" alt="SeuQR"><figcaption>seuqr-logo.svg</figcaption></figure>
+      <figure class="dark"><img class="logo" src="svg/seuqr-logo-white.svg" alt="SeuQR"><figcaption>seuqr-logo-white.svg</figcaption></figure>
+      <figure class="aurora"><img class="logo" src="svg/seuqr-logo-blue.svg" alt="SeuQR"><figcaption>seuqr-logo-blue.svg</figcaption></figure>
+    </div>
+  </section>
+
+  <section>
+    <div class="eyebrow">Símbolo</div>
+    <h2>Mark</h2>
+    <div class="grid">
+      <figure class="light"><img class="mark" src="svg/seuqr-mark.svg" alt=""><figcaption>seuqr-mark.svg</figcaption></figure>
+      <figure class="dark"><img class="mark" src="svg/seuqr-mark-white.svg" alt=""><figcaption>seuqr-mark-white.svg</figcaption></figure>
+      <figure class="aurora"><img class="mark" src="svg/seuqr-mark-blue.svg" alt=""><figcaption>seuqr-mark-blue.svg</figcaption></figure>
+    </div>
+  </section>
+
+  <section>
+    <div class="eyebrow">App icon & favicon</div>
+    <h2>Iridescente</h2>
+    <div class="grid">
+      <figure class="light"><img class="icon" src="svg/seuqr-app-icon.svg" alt=""><figcaption>seuqr-app-icon.svg · png/app-icon-*.png</figcaption></figure>
+      <figure class="light">
+        <div class="sizes">
+          <img src="png/favicon-16.png" width="16" height="16" alt="">
+          <img src="png/favicon-32.png" width="32" height="32" alt="">
+          <img src="png/favicon-48.png" width="48" height="48" alt="">
+          <img src="png/apple-touch-icon.png" width="60" height="60" alt="">
+        </div>
+        <figcaption>favicon.svg · favicon.ico · apple-touch-icon.png</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section>
+    <div class="eyebrow">Cores</div>
+    <h2>Paleta da marca</h2>
+    <div class="colors">
+      <div class="sw" style="background:#0f1115;color:#fff">Ink #0f1115</div>
+      <div class="sw" style="background:linear-gradient(#5897f7,#3872e6);color:#fff">Blue #5897f7 → #3872e6</div>
+      <div class="sw" style="background:linear-gradient(135deg,#f6fbe4,#cfdcff 45%,#ffe2d8)">Iri #f6fbe4 · #cfdcff · #ffe2d8</div>
+      <div class="sw" style="background:#f6dcff">Lilás #f6dcff</div>
+      <div class="sw" style="background:#f3f5f9">Canvas #f3f5f9</div>
+    </div>
+  </section>
+</div>
+</body>
+</html>
