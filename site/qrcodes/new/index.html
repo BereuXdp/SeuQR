@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Novo QR Code — SeuQR</title>
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#101c42">
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="/auth.css">
+  <link rel="stylesheet" href="/dashboard.css">
+  <script>
+    try { if (!localStorage.getItem('seuqr.session')) location.replace('/login/?next=' + encodeURIComponent(location.pathname + location.search)); } catch (e) { location.replace('/login/'); }
+  </script>
+</head>
+<body class="app dash" data-page="qr-form">
+  <aside class="dash-side" data-side></aside>
+
+  <main class="dash-main">
+    <div class="dash-demo">Modo demonstração: os dados ficam salvos só neste navegador.</div>
+
+    <a href="/qrcodes/" class="back-link">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>Voltar para QR Codes
+    </a>
+    <header class="dash-head">
+      <div>
+        <span class="eyebrow" data-form-eyebrow>Novo QR Code</span>
+        <h1 data-form-title>Criar QR Code</h1>
+        <p class="dash-sub">Crie um slug fixo e vincule um destino que poderá ser editado depois.</p>
+      </div>
+    </header>
+
+    <div class="qr-form-grid">
+      <form class="panel" data-qr-form novalidate>
+        <div class="form-alert form-alert--info" data-limit-alert role="alert"></div>
+
+        <div class="form" style="margin-top:0">
+          <div class="f-row">
+            <div class="f-group">
+              <label class="f-label" for="qr-name">Nome</label>
+              <input class="f-input" id="qr-name" name="name" placeholder="Cardápio principal" required>
+              <span class="f-error">Dê um nome para o QR.</span>
+            </div>
+            <div class="f-group">
+              <label class="f-label" for="qr-slug">Slug fixo</label>
+              <input class="f-input mono" id="qr-slug" name="slug" placeholder="cardapio-principal" required pattern="[a-z0-9-]{2,40}">
+              <span class="f-hint">URL curta: <span class="mono" data-short-url>seuqr.com/q/…</span></span>
+              <span class="f-error" data-slug-error>Use de 2 a 40 letras minúsculas, números ou hífen.</span>
+            </div>
+          </div>
+
+          <div class="f-row">
+            <div class="f-group">
+              <label class="f-label" for="qr-type">Tipo</label>
+              <select class="f-input" id="qr-type" name="type">
+                <option value="url">Link (URL)</option>
+                <option value="text">Texto</option>
+              </select>
+            </div>
+            <div class="f-group">
+              <label class="f-label" for="qr-legacy">Código legado <small class="f-optional">opcional</small></label>
+              <input class="f-input mono" id="qr-legacy" name="legacy" placeholder="2131264" inputmode="numeric">
+              <span class="f-hint">Para QR Codes antigos no formato <span class="mono">/Redirect?code=…</span></span>
+            </div>
+          </div>
+
+          <div class="f-group">
+            <label class="f-label" for="qr-dest">Destino final</label>
+            <input class="f-input mono" id="qr-dest" name="dest" placeholder="https://suaempresa.com/oferta" required>
+            <span class="f-hint">Pode trocar depois sem reimprimir o QR.</span>
+            <span class="f-error">Informe para onde o QR deve levar.</span>
+          </div>
+
+          <div class="f-group">
+            <label class="f-label" for="qr-content">Conteúdo adicional <small class="f-optional">opcional</small></label>
+            <input class="f-input" id="qr-content" name="content" placeholder="Texto opcional para campanhas ou notas internas">
+          </div>
+
+          <div class="f-group">
+            <label class="f-label" for="qr-desc">Descrição <small class="f-optional">opcional</small></label>
+            <textarea class="f-input f-textarea" id="qr-desc" name="description" rows="3" placeholder="Observações, contexto da campanha ou instruções internas"></textarea>
+          </div>
+
+          <label class="toggle-row">
+            <span class="switch"><input type="checkbox" name="active" checked><span></span></span>
+            QR Code ativo para redirecionamento
+          </label>
+
+          <div class="form-actions">
+            <button type="submit" class="btn btn--dark btn--lg" data-submit>Criar QR Code</button>
+            <a href="/qrcodes/" class="btn btn--outline btn--lg">Cancelar</a>
+            <button type="button" class="btn btn--danger btn--lg form-actions__delete" data-delete hidden>Excluir</button>
+          </div>
+        </div>
+      </form>
+
+      <aside class="panel qr-preview" aria-label="Prévia do QR">
+        <span class="eyebrow">Prévia</span>
+        <div class="qr-preview__code" data-preview role="img" aria-label="Prévia do QR Code"></div>
+        <span class="qr-preview__url mono" data-preview-url>seuqr.com/q/…</span>
+        <p class="qr-preview__note">O QR aponta sempre para esse link fixo. Trocar o destino não muda a imagem.</p>
+        <button type="button" class="btn btn--outline" data-preview-png>Baixar PNG</button>
+      </aside>
+    </div>
+  </main>
+
+  <div class="dash-toast" role="status" data-toast></div>
+  <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js" defer></script>
+  <script src="/dashboard.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>QR Codes — SeuQR</title>
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#101c42">
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="/auth.css">
+  <link rel="stylesheet" href="/dashboard.css">
+  <script>
+    try { if (!localStorage.getItem('seuqr.session')) location.replace('/login/?next=/qrcodes/'); } catch (e) { location.replace('/login/'); }
+  </script>
+</head>
+<body class="app dash" data-page="qrs">
+  <aside class="dash-side" data-side></aside>
+
+  <main class="dash-main">
+    <div class="dash-demo">Modo demonstração: os dados ficam salvos só neste navegador.</div>
+
+    <header class="dash-head">
+      <div>
+        <span class="eyebrow">QR Codes</span>
+        <h1>Seus QR Codes</h1>
+        <p class="dash-sub">Gerencie slugs fixos, destinos editáveis, status de ativação e scans por campanha.</p>
+      </div>
+      <a href="/qrcodes/new/" class="btn btn--dark btn--lg">
+        <svg viewBox="0 0 24 24" aria-hidden="true" class="ico"><path d="M12 5v14M5 12h14"/></svg>
+        Novo QR Code
+      </a>
+    </header>
+
+    <section class="panel" style="margin-top:28px" aria-labelledby="all-title">
+      <div class="panel-head">
+        <div>
+          <h2 id="all-title">Todos os códigos</h2>
+          <p data-usage>Plano atual: Starter · 0/3 usados</p>
+        </div>
+        <label class="dash-search">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.2-4.2"/></svg>
+          <input type="search" placeholder="Buscar por nome, slug ou destino" data-search aria-label="Buscar QR Codes">
+        </label>
+      </div>
+
+      <div class="table-wrap">
+        <table class="qr-table">
+          <thead>
+            <tr><th>Nome</th><th>Slug</th><th>Status</th><th>Scans</th><th>Atualizado</th><th><span class="sr-only">Ações</span></th></tr>
+          </thead>
+          <tbody data-qr-rows></tbody>
+        </table>
+      </div>
+      <div class="dash-empty" data-empty hidden>
+        <strong>Nenhum QR Code encontrado</strong>
+        <p>Crie o primeiro para começar.</p>
+        <a href="/qrcodes/new/" class="btn btn--dark">Novo QR Code</a>
+      </div>
+    </section>
+  </main>
+
+  <div class="dash-toast" role="status" data-toast></div>
+  <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js" defer></script>
+  <script src="/dashboard.js" defer></script>
+</body>
+</html>

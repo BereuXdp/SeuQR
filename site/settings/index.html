@@ -28,6 +28,7 @@
       <div>
         <span class="eyebrow">Configurações</span>
         <h1>Sua conta</h1>
+        <p class="dash-sub">Gerencie perfil, plano atual e sessão da conta.</p>
       </div>
     </header>
 
@@ -45,33 +46,25 @@
           <input class="f-input" id="set-email" name="email" type="email" autocomplete="email" required>
           <span class="f-error">Digite um e-mail válido.</span>
         </div>
-        <div class="settings-actions"><button type="submit" class="btn btn--dark">Salvar alterações</button></div>
+        <div class="settings-actions"><button type="submit" class="btn btn--dark">Salvar perfil</button></div>
       </form>
     </section>
 
-    <section class="panel" aria-labelledby="senha">
-      <h2 id="senha">Senha</h2>
-      <p>No modo demonstração qualquer senha funciona; aqui só validamos o formulário.</p>
-      <form class="settings-form" data-password-form novalidate>
-        <div class="f-group">
-          <label class="f-label" for="set-pw-new">Nova senha</label>
-          <input class="f-input" id="set-pw-new" name="password" type="password" autocomplete="new-password" required minlength="8">
-          <span class="f-error">Use pelo menos 8 caracteres.</span>
+    <section class="panel" aria-labelledby="plano">
+      <div class="panel-head">
+        <div>
+          <h2 id="plano">Plano atual</h2>
+          <p data-settings-plan>Starter · grátis</p>
         </div>
-        <div class="f-group">
-          <label class="f-label" for="set-pw-confirm">Confirmar nova senha</label>
-          <input class="f-input" id="set-pw-confirm" name="confirm" type="password" autocomplete="new-password" required minlength="8">
-          <span class="f-error" data-confirm-error>As senhas não conferem.</span>
-        </div>
-        <div class="settings-actions"><button type="submit" class="btn btn--outline">Atualizar senha</button></div>
-      </form>
+        <a href="/billing/" class="btn btn--outline">Ver billing</a>
+      </div>
     </section>
 
-    <section class="panel danger-zone" aria-labelledby="zona">
-      <h2 id="zona">Sair e limpar dados</h2>
-      <p>Encerre a sessão ou apague os QR Codes e o plano de demonstração deste navegador.</p>
+    <section class="panel" aria-labelledby="sessao">
+      <h2 id="sessao">Sessão</h2>
+      <p>Você está autenticado como <strong data-settings-email>você</strong>.</p>
       <div class="settings-actions" style="margin-top:18px">
-        <button type="button" class="btn btn--outline" data-logout>Sair da conta</button>
+        <button type="button" class="btn btn--dark" data-logout>Sair da conta</button>
         <button type="button" class="btn btn--danger" data-reset>Apagar dados de demonstração</button>
       </div>
     </section>

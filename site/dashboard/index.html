@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Painel — SeuQR</title>
+  <title>Dashboard — SeuQR</title>
   <meta name="robots" content="noindex">
   <meta name="theme-color" content="#101c42">
   <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
@@ -15,11 +15,10 @@
   <link rel="stylesheet" href="/auth.css">
   <link rel="stylesheet" href="/dashboard.css">
   <script>
-    // Sem sessão: volta para o login antes de mostrar o painel
     try { if (!localStorage.getItem('seuqr.session')) location.replace('/login/?next=/dashboard/'); } catch (e) { location.replace('/login/'); }
   </script>
 </head>
-<body class="app dash" data-page="qrs">
+<body class="app dash" data-page="overview">
   <aside class="dash-side" data-side></aside>
 
   <main class="dash-main">
@@ -27,72 +26,62 @@
 
     <header class="dash-head">
       <div>
-        <span class="eyebrow">Painel</span>
+        <span class="eyebrow">Dashboard</span>
         <h1>Olá, <span data-user-first>você</span></h1>
+        <p class="dash-sub">Visão geral dos seus QR Codes editáveis, acessos recentes e performance da operação.</p>
       </div>
-      <button type="button" class="btn btn--dark btn--lg" data-new-qr>
+      <a href="/qrcodes/new/" class="btn btn--dark btn--lg">
         <svg viewBox="0 0 24 24" aria-hidden="true" class="ico"><path d="M12 5v14M5 12h14"/></svg>
         Novo QR Code
-      </button>
+      </a>
     </header>
 
     <section class="dash-stats" aria-label="Resumo">
-      <div class="dash-stat"><small>QR Codes ativos</small><strong data-stat="active">0</strong></div>
-      <div class="dash-stat"><small>Scans hoje</small><strong data-stat="today">0</strong></div>
-      <div class="dash-stat"><small>Scans nos últimos 7 dias</small><strong data-stat="week">0</strong></div>
-      <div class="dash-stat"><small>Total de scans</small><strong data-stat="total">0</strong></div>
+      <div class="dash-stat">
+        <span class="dash-stat__icon"><svg viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="7" height="7" rx="2"/><rect x="13.5" y="3.5" width="7" height="7" rx="2"/><rect x="3.5" y="13.5" width="7" height="7" rx="2"/><path d="M14 14h2.5v2.5H14zM18 18h2.5v2.5H18z"/></svg></span>
+        <small>Total de QR Codes</small><strong data-stat="total-qrs">0</strong><em>Todos os códigos criados na conta</em>
+      </div>
+      <div class="dash-stat">
+        <span class="dash-stat__icon"><svg viewBox="0 0 24 24"><path d="M3 12h4l3-7 4 14 3-7h4"/></svg></span>
+        <small>Códigos ativos</small><strong data-stat="active">0</strong><em>Prontos para redirecionar</em>
+      </div>
+      <div class="dash-stat">
+        <span class="dash-stat__icon"><svg viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8M15 7h6v6"/></svg></span>
+        <small>Scans totais</small><strong data-stat="total-scans">0</strong><em>Acumulado desde o início</em>
+      </div>
+      <div class="dash-stat">
+        <span class="dash-stat__icon"><svg viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg></span>
+        <small>Scans do mês</small><strong data-stat="month">0</strong><em>Movimento do ciclo atual</em>
+      </div>
     </section>
 
-    <section aria-labelledby="qr-title">
-      <div class="dash-toolbar">
-        <h2 id="qr-title">Seus QR Codes</h2>
-        <label class="dash-search">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.2-4.2"/></svg>
-          <input type="search" placeholder="Buscar por nome ou destino" data-search aria-label="Buscar QR Codes">
-        </label>
-      </div>
-      <div class="qr-grid" data-qr-list></div>
-      <div class="dash-empty" data-empty hidden>
-        <strong>Nenhum QR Code por aqui</strong>
-        <p>Crie o primeiro e mude o destino quando quiser.</p>
-        <button type="button" class="btn btn--dark" data-new-qr>Criar QR Code</button>
-      </div>
-    </section>
+    <div class="overview-grid">
+      <section class="panel" aria-labelledby="chart-title">
+        <h2 id="chart-title">Acessos dos últimos 7 dias</h2>
+        <p>Leitura simples para acompanhar campanhas.</p>
+        <div class="week-chart" data-week-chart aria-hidden="true"></div>
+        <p class="week-total" data-week-total></p>
+      </section>
+
+      <section class="panel" aria-labelledby="recent-title">
+        <div class="panel-head">
+          <div>
+            <h2 id="recent-title">QR Codes recentes</h2>
+            <p>Acesse, edite ou acompanhe um código rapidamente.</p>
+          </div>
+          <a href="/qrcodes/" class="link">Ver todos</a>
+        </div>
+        <ul class="recent-list" data-recent></ul>
+        <div class="dash-empty" data-empty hidden>
+          <strong>Você ainda não criou QR Codes</strong>
+          <p>Comece pelo primeiro e já teste o fluxo de redirecionamento.</p>
+          <a href="/qrcodes/new/" class="btn btn--dark">Novo QR Code</a>
+        </div>
+      </section>
+    </div>
   </main>
 
-  <!-- Criar QR -->
-  <dialog class="dash-modal" data-modal aria-labelledby="modal-title">
-    <form method="dialog" class="dash-modal__box" data-create-form novalidate>
-      <div class="dash-modal__head">
-        <h2 id="modal-title">Novo QR Code</h2>
-        <button type="button" class="dash-x" data-close aria-label="Fechar"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
-      </div>
-      <div class="form" style="margin-top:20px">
-        <div class="f-group">
-          <label class="f-label" for="qr-name">Nome</label>
-          <input class="f-input" id="qr-name" name="name" placeholder="Ex.: Cardápio — Unidade Centro" required>
-          <span class="f-error">Dê um nome para o QR.</span>
-        </div>
-        <div class="f-group">
-          <label class="f-label" for="qr-slug">Link fixo do QR</label>
-          <div class="slug-field"><span class="mono">seuqr.com/q/</span><input class="f-input mono" id="qr-slug" name="slug" placeholder="menu-centro" required pattern="[a-z0-9-]{2,40}"></div>
-          <span class="f-hint">Esse endereço fica impresso e não muda.</span>
-          <span class="f-error" data-slug-error>Use de 2 a 40 letras minúsculas, números ou hífen.</span>
-        </div>
-        <div class="f-group">
-          <label class="f-label" for="qr-dest">Destino</label>
-          <input class="f-input mono" id="qr-dest" name="dest" placeholder="cardapio.com/almoco" required>
-          <span class="f-hint">Pode trocar depois sem reimprimir.</span>
-          <span class="f-error">Informe para onde o QR deve levar.</span>
-        </div>
-        <div class="form-alert form-alert--info" data-limit-alert></div>
-        <button type="submit" class="btn btn--dark btn--submit"><span class="btn__label">Criar QR Code</span></button>
-      </div>
-    </form>
-  </dialog>
-
   <div class="dash-toast" role="status" data-toast></div>
-
   <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js" defer></script>
   <script src="/dashboard.js" defer></script>
 </body>

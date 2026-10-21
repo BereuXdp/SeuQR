@@ -538,6 +538,30 @@ h1, h2, h3 { color: var(--ink); font-weight: 600; letter-spacing: -.02em; }
 .bars__labels { display: flex; gap: 10px; margin-top: 8px; padding: 0 2px; font-size: 10.5px; color: var(--faint); }
 .bars__labels span { flex: 1; text-align: center; }
 
+/* ---------- Mockup no estilo da área interna ----------
+   Mesma barra lateral azul-marinho, fundo e cards brancos do painel (/dashboard) */
+.mockup__body { background: var(--tint); }
+.mock-side {
+  background: var(--grad-navy);
+  border-right: 0;
+  color: var(--on-navy-muted);
+}
+.mock-side__item { color: var(--on-navy-muted); }
+.mock-side__item svg { stroke-width: 1.7; stroke-linejoin: round; }
+.mock-side__item.is-active { background: rgba(255,255,255,.16); color: #fff; box-shadow: inset 0 1px 0 rgba(255,255,255,.16); }
+.mock-side__item.is-active svg { fill: none; stroke: currentColor; }
+.mock-main { background: var(--tint); }
+.qr-card { border: 0; background: #fff; box-shadow: var(--shadow-soft); border-radius: 18px; }
+.mock-card { padding: 16px; border-radius: 16px; background: #fff; box-shadow: var(--shadow-soft); }
+.mock-card--chart { margin-top: 12px; }
+.mock-card__title { display: block; font-size: 13px; font-weight: 600; color: var(--ink); }
+.mock-card--chart .bars { margin-top: 12px; height: 80px; }
+.stats { margin-top: 12px; }
+.stat { position: relative; border: 0; background: #fff; box-shadow: var(--shadow-soft); border-radius: 16px; }
+.stat__label { padding-right: 36px; }
+.stat__icon { position: absolute; top: 10px; right: 10px; display: grid; place-items: center; width: 30px; height: 30px; border-radius: 10px; background: #eef3ff; color: var(--blue-b); }
+.stat__icon svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+
 /* ---------- Hero interativo ---------- */
 .hero__spot {
   position: absolute;

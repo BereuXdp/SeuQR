@@ -13,9 +13,12 @@ site/                 Site estático (HTML, CSS e JS puro, sem build)
   register/           Tela de cadastro        (/register?plan=pro)
   checkout/           Pagamento cartão / Pix  (/checkout/?plan=pro)
   auth.css, auth.js   Estilos e lógica compartilhados das telas acima
-  dashboard/          Área logada: QR Codes   (/dashboard)
+  pricing/            Página pública de planos (/pricing)
+  dashboard/          Área logada: visão geral (/dashboard)
+  qrcodes/            Área logada: lista de QR Codes (/qrcodes)
+  qrcodes/new/        Área logada: criar QR (/qrcodes/new) e editar (/qrcodes/new/?id=…)
   billing/            Área logada: plano e pagamentos (/billing)
-  settings/           Área logada: perfil, senha, sair (/settings)
+  settings/           Área logada: perfil e sessão (/settings)
   dashboard.css/.js   Estilos e lógica da área logada
   assets/             Logo, favicon e ícones usados pelo site
 logo/                 Identidade visual
@@ -44,7 +47,7 @@ Login, cadastro e checkout **ainda não enviam dados**: o envio é simulado.
 ### Modo demonstração
 
 - O login aceita **qualquer e-mail e qualquer senha** e cria uma sessão só no navegador (`localStorage`, chave `seuqr.session`).
-- A área logada (`/dashboard`, `/billing`, `/settings`) redireciona para o login sem sessão.
+- A área logada (`/dashboard`, `/qrcodes`, `/billing`, `/settings`) segue a estrutura do painel atual do seuqr.com e redireciona para o login sem sessão.
 - QR Codes, plano e pagamentos de teste ficam salvos no navegador (`seuqr.qrs:<email>`). Em Configurações dá para sair ou apagar esses dados.
 - Ao ligar no backend, troque as funções de leitura/gravação de `dashboard.js` por chamadas à API.
 
