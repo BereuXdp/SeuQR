@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tudo pronto — SeuQR</title>
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#101c42">
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="/auth.css">
+  <script>
+    try { if (!localStorage.getItem('seuqr.session')) location.replace('/login/?next=/dashboard/'); } catch (e) { location.replace('/login/'); }
+  </script>
+</head>
+<body class="app welcome-page">
+  <header class="co-top">
+    <a href="/" aria-label="SeuQR, página inicial"><img src="/assets/seuqr-logo.svg" alt="SeuQR" width="110" height="32"></a>
+  </header>
+
+  <main class="welcome">
+    <div class="welcome__glow" aria-hidden="true"></div>
+    <section class="welcome__card" aria-labelledby="welcome-title">
+      <div class="steps-bar" aria-label="Etapas">
+        <span class="is-done"><b>✓</b>Conta</span><hr>
+        <span class="is-done" data-step-pay><b>✓</b>Pagamento</span><hr data-step-pay-line>
+        <span class="is-current" aria-current="step"><b>3</b>Pronto</span>
+      </div>
+
+      <div class="success__icon"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
+      <span class="welcome__plan" data-welcome-plan>Plano Starter</span>
+      <h1 id="welcome-title" data-welcome-title>Conta criada!</h1>
+      <p data-welcome-text>Bem-vindo ao SeuQR. Seu plano Starter já está ativo, com até 3 QR Codes dinâmicos.</p>
+      <p class="welcome__stripe" data-welcome-stripe hidden>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10.5" width="14" height="10" rx="2.5"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/></svg>
+        Pagamento confirmado pela Stripe.
+      </p>
+
+      <ol class="welcome__steps">
+        <li><b>1</b><div><strong>Crie seu primeiro QR</strong><span>Dê um nome, escolha o slug fixo e o destino.</span></div></li>
+        <li><b>2</b><div><strong>Baixe o PNG e imprima</strong><span>Cardápio, embalagem, cartaz ou PDV.</span></div></li>
+        <li><b>3</b><div><strong>Troque o destino quando quiser</strong><span>O QR impresso continua o mesmo.</span></div></li>
+      </ol>
+
+      <div class="welcome__ctas">
+        <a href="/qrcodes/new/" class="btn btn--dark btn--lg">Criar meu primeiro QR</a>
+        <a href="/dashboard/" class="btn btn--outline btn--lg">Ir para o painel</a>
+      </div>
+    </section>
+  </main>
+
+  <script src="/auth.js" defer></script>
+</body>
+</html>

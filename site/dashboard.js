@@ -456,7 +456,7 @@
         <tr>
           <td>${new Date(x.date).toLocaleDateString('pt-BR')}</td>
           <td>${esc((PLANS[x.plan] || {}).name || x.plan)}</td>
-          <td>${x.method === 'pix' ? 'Pix' : 'Cartão'}</td>
+          <td>${x.method === 'stripe' ? 'Stripe' : x.method === 'pix' ? 'Pix' : 'Cartão'}</td>
           <td>${brl(x.amount)}</td>
         </tr>`).join('');
     }

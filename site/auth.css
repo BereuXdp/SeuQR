@@ -275,70 +275,28 @@ body.app { background: var(--tint); min-height: 100vh; }
 .steps-bar .is-current b { background: var(--grad-navy); color: #fff; }
 .steps-bar hr { flex: 1; max-width: 48px; height: 1px; margin: 0; border: 0; background: var(--line-2); }
 
-.pay-tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 16px; padding: 5px; border-radius: 16px; background: var(--tint); }
-.pay-tabs button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  height: 44px;
-  border: 0;
-  border-radius: 12px;
-  background: transparent;
-  color: var(--muted);
-  font: 500 15px var(--font);
-  cursor: pointer;
-  transition: background-color .25s, color .25s, box-shadow .25s;
-}
-.pay-tabs button svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
-.pay-tabs button[aria-selected="true"] { background: #fff; color: var(--ink); box-shadow: var(--shadow-soft); }
-.pay-panel { margin-top: 20px; }
-.pay-panel[hidden] { display: none; }
+/* Conta na revisão do pedido */
+.co-account { display: flex; align-items: center; gap: 12px; margin-top: 14px; padding: 14px 16px; border-radius: 16px; background: var(--tint); }
+.co-account > div { flex: 1; min-width: 0; }
+.co-account strong { display: block; font-size: 15px; color: var(--ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.co-account small { display: block; font-size: 13px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.co-account__avatar { display: grid; place-items: center; flex: none; width: 40px; height: 40px; border-radius: 50%; background: var(--grad-blue); color: #fff; font-size: 13px; font-weight: 600; }
 
-/* Prévia do cartão */
-.card-preview {
-  position: relative;
-  overflow: hidden;
-  isolation: isolate;
-  aspect-ratio: 1.586;
-  max-width: 340px;
-  margin-bottom: 20px;
-  padding: 20px 22px;
-  border-radius: 18px;
-  background: var(--grad-navy);
-  color: #fff;
-  box-shadow: 0 24px 40px -24px rgba(16,28,66,.7);
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-.card-preview::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  background:
-    radial-gradient(70% 70% at 100% 0%, rgba(88,151,247,.55), transparent 70%),
-    radial-gradient(60% 60% at 0% 100%, rgba(155,132,255,.3), transparent 70%);
-}
-.card-preview__top { display: flex; justify-content: space-between; align-items: center; }
-.card-preview__chip { width: 38px; height: 28px; border-radius: 6px; background: linear-gradient(135deg, #f3d48a, #c9a24c); }
-.card-preview__brand { font-size: 14px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; opacity: .9; }
-.card-preview__number { font-family: var(--mono); font-size: clamp(16px, 2.2vw, 19px); letter-spacing: .08em; }
-.card-preview__bottom { display: flex; justify-content: space-between; gap: 12px; font-size: 12px; }
-.card-preview__bottom small { display: block; font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: var(--on-navy-muted); }
-.card-preview__bottom span { display: block; font-family: var(--mono); font-size: 13px; text-transform: uppercase; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 200px; }
+/* Passos até a Stripe */
+.stripe-steps { list-style: none; margin: 14px 0 0; padding: 0; display: grid; gap: 12px; }
+.stripe-steps li { display: grid; grid-template-columns: 28px 1fr; gap: 12px; align-items: start; font-size: 15px; color: var(--text); }
+.stripe-steps b { display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; background: #eef0ff; color: #4f46e5; font-size: 13px; }
+.stripe-steps .mono { font-size: 13px; }
 
-/* Pix */
-.pix-box { display: grid; grid-template-columns: 160px 1fr; gap: 20px; align-items: center; padding: 18px; border-radius: 18px; background: var(--tint); }
-.pix-box[hidden] { display: none; }
-.pix-qr { width: 160px; height: 160px; padding: 10px; border-radius: 14px; background: #fff; box-shadow: var(--shadow-soft); }
-.pix-qr svg { width: 100%; height: 100%; }
-.pix-code { display: flex; gap: 8px; margin-top: 12px; }
-.pix-code input { flex: 1; min-width: 0; height: 42px; padding: 0 12px; border-radius: 10px; border: 1px solid var(--line-2); background: #fff; font: 13px var(--mono); color: var(--muted); }
-.pix-code .btn { height: 42px; }
-.pix-steps { margin: 0; padding-left: 18px; font-size: 14px; color: var(--muted); display: grid; gap: 4px; }
-.demo-note { margin-top: 10px; font-size: 12.5px; color: #a1680f; }
+/* Botão no roxo da Stripe, para a pessoa reconhecer para onde vai */
+.btn--stripe { background: linear-gradient(180deg, #7a73ff, #635bff); color: #fff; box-shadow: 0 1px 2px rgba(50,40,160,.4), 0 0 0 1px #5248e6, inset 0 1px 0 rgba(255,255,255,.18); }
+.btn--stripe:hover { background: linear-gradient(180deg, #857eff, #6b63ff); }
+.btn--stripe .ico { width: 18px; height: 18px; transition: transform .3s var(--ease); }
+.btn--stripe:hover .ico { transform: translateX(3px); }
+.btn--stripe.is-loading .ico { display: none; }
+.co-legal { margin-top: 12px; text-align: center; font-size: 13px; color: var(--faint); }
+.co-powered { display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 14px; font-size: 12px; color: var(--faint); }
+.co-powered strong { font-size: 15px; font-weight: 700; letter-spacing: -.02em; color: #635bff; }
 
 /* Resumo do pedido */
 .summary {
@@ -383,9 +341,7 @@ body.app { background: var(--tint); min-height: 100vh; }
 .summary__rows .total { margin-top: 6px; padding-top: 12px; border-top: 1px dashed rgba(255,255,255,.18); font-size: 16px; color: #fff; font-weight: 600; }
 .summary__note { margin-top: 16px; font-size: 13px; }
 
-/* Sucesso */
-.success { text-align: center; padding: 24px 0 8px; }
-.success[hidden] { display: none; }
+/* Ícone de sucesso */
 .success__icon {
   display: grid;
   place-items: center;
@@ -399,8 +355,32 @@ body.app { background: var(--tint); min-height: 100vh; }
 .success__icon svg { width: 36px; height: 36px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 30; stroke-dashoffset: 30; animation: draw .5s .25s ease forwards; }
 @keyframes pop { from { transform: scale(.6); opacity: 0; } }
 @keyframes draw { to { stroke-dashoffset: 0; } }
-.success h1 { font-size: 30px; }
-.success p { max-width: 420px; margin: 10px auto 26px; color: var(--muted); }
+
+/* ---------- Boas-vindas (depois do cadastro ou da Stripe) ---------- */
+.welcome { position: relative; isolation: isolate; display: grid; place-items: center; min-height: calc(100vh - 80px); padding: 32px 16px 64px; }
+.welcome__glow {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(40% 40% at 50% 10%, rgba(88,151,247,.22), transparent 70%),
+    radial-gradient(30% 30% at 20% 60%, rgba(155,132,255,.14), transparent 70%),
+    radial-gradient(30% 30% at 80% 60%, rgba(54,160,255,.12), transparent 70%);
+}
+.welcome__card { width: min(560px, 100%); padding: 40px; border-radius: 32px; background: #fff; box-shadow: var(--shadow-mock); text-align: center; }
+.welcome__card .steps-bar { justify-content: center; }
+.welcome__plan { display: inline-block; padding: 4px 12px; border-radius: 999px; background: #eef3ff; color: var(--blue-b); font-size: 13px; font-weight: 600; }
+.welcome__card h1 { margin-top: 12px; font-size: clamp(30px, 4vw, 38px); letter-spacing: -.035em; }
+.welcome__card > p { max-width: 420px; margin: 10px auto 0; color: var(--muted); }
+.welcome__stripe { display: inline-flex !important; align-items: center; gap: 8px; margin-top: 14px !important; padding: 8px 14px; border-radius: 12px; background: #f1f0ff; color: #4f46e5; font-size: 14px; }
+.welcome__stripe[hidden] { display: none !important; }
+.welcome__stripe svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.welcome__steps { list-style: none; margin: 28px 0 0; padding: 0; display: grid; gap: 10px; text-align: left; }
+.welcome__steps li { display: grid; grid-template-columns: 32px 1fr; gap: 12px; align-items: center; padding: 12px 14px; border-radius: 16px; background: var(--tint); }
+.welcome__steps b { display: grid; place-items: center; width: 32px; height: 32px; border-radius: 10px; background: var(--grad-navy); color: #fff; font-size: 14px; }
+.welcome__steps strong { display: block; font-size: 15px; color: var(--ink); }
+.welcome__steps span { display: block; font-size: 13.5px; color: var(--muted); }
+.welcome__ctas { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 28px; }
 
 /* ---------- Responsivo ---------- */
 @media (max-width: 960px) {
@@ -416,12 +396,12 @@ body.app { background: var(--tint); min-height: 100vh; }
   .co-shell { padding: 20px 16px 56px; gap: 16px; }
   .co-card, .summary { padding: 22px; border-radius: 22px; }
   .f-row { grid-template-columns: 1fr; }
-  .f-row.f-row--keep { grid-template-columns: 1fr 1fr; }
   .plan-pick { gap: 6px; }
   .plan-pick span { padding: 10px; }
   .plan-pick b { font-size: 14px; }
   .plan-pick small { font-size: 12px; }
-  .pix-box { grid-template-columns: 1fr; justify-items: center; text-align: left; }
+  .welcome__card { padding: 28px 20px; border-radius: 24px; }
+  .welcome__ctas .btn { width: 100%; }
   .co-secure span { display: none; }
 }
 

@@ -11,7 +11,8 @@ site/                 Site estático (HTML, CSS e JS puro, sem build)
   script.js           Interações: navbar, hero interativo, animações de scroll
   login/              Tela de login           (/login)
   register/           Tela de cadastro        (/register?plan=pro)
-  checkout/           Pagamento cartão / Pix  (/checkout/?plan=pro)
+  checkout/           Revisão do pedido e ida para a Stripe (/checkout/?plan=pro)
+  welcome/            Tela de sucesso após cadastro ou pagamento (/welcome/?plan=…)
   auth.css, auth.js   Estilos e lógica compartilhados das telas acima
   pricing/            Página pública de planos (/pricing)
   dashboard/          Área logada: visão geral (/dashboard)
@@ -41,8 +42,19 @@ Depois abra http://localhost:5500.
 Login, cadastro e checkout **ainda não enviam dados**: o envio é simulado.
 
 - Em `site/auth.js`, troque `DEMO = true` para `false` e ajuste `submitTo()`.
-- Cada formulário tem o endpoint em `data-endpoint` (`/api/auth/login`, `/api/auth/register`, `/api/billing/subscribe`).
-- Pagamento: os dados do cartão **não devem ir para a nossa API** — use a tokenização do gateway escolhido e envie só o token. O gateway ainda não foi definido.
+- Cada formulário tem o endpoint em `data-endpoint` (`/api/auth/login`, `/api/auth/register`).
+
+### Pagamento (Stripe Checkout)
+
+O pagamento acontece na página da Stripe; o SeuQR não recebe dados de cartão. Em `site/auth.js`, configure `STRIPE`:
+
+- **Opção A (recomendada):** `checkoutEndpoint` — o backend cria a Checkout Session e responde `{ url }`.
+  - `success_url`: `https://seuqr.com/welcome/?plan={plano}&paid=1&session_id={CHECKOUT_SESSION_ID}`
+  - `cancel_url`: `https://seuqr.com/checkout/?plan={plano}&canceled=1`
+  - Ative o plano pelo webhook `checkout.session.completed`, não pela volta do navegador.
+- **Opção B (sem servidor):** `paymentLinks` — cole os Payment Links criados no painel da Stripe. O e-mail vai preenchido.
+
+Fluxo: cadastro grátis → `/welcome`; cadastro pago → `/checkout` → Stripe → `/welcome?paid=1`.
 
 ### Modo demonstração
 

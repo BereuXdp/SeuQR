@@ -7,11 +7,21 @@
      Enquanto DEMO = true, nada é enviado: o envio é simulado.
      Para ligar na API, troque DEMO para false e ajuste submitTo()
      (cada <form> tem o endpoint em data-endpoint).
-     Pagamento: os dados do cartão NUNCA devem ir direto para a
-     nossa API — use o SDK/tokenização do gateway escolhido
-     (Mercado Pago, Stripe, Asaas…) e envie só o token.
+     Pagamento: feito na página da Stripe (Checkout). O SeuQR não
+     recebe dados de cartão. Configure UMA das opções em STRIPE.
      --------------------------------------------------------- */
   const DEMO = true;
+
+  const STRIPE = {
+    // Opção A (recomendada): o backend cria a Checkout Session e devolve { url }.
+    //   success_url: https://seuqr.com/welcome/?plan={plano}&paid=1&session_id={CHECKOUT_SESSION_ID}
+    //   cancel_url:  https://seuqr.com/checkout/?plan={plano}&canceled=1
+    //   Ative o plano pelo webhook checkout.session.completed, não pela volta do navegador.
+    checkoutEndpoint: '/api/billing/checkout',
+    // Opção B (sem servidor): Payment Links criados no painel da Stripe.
+    //   Ex.: pro: 'https://buy.stripe.com/xxxx'. Se preenchido, é usado no lugar da opção A.
+    paymentLinks: { pro: '', business: '' },
+  };
 
   async function submitTo(endpoint, payload) {
     if (DEMO) {
@@ -48,7 +58,6 @@
   const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
   const $ = (s, el = document) => el.querySelector(s);
   const $$ = (s, el = document) => [...el.querySelectorAll(s)];
-  const digits = (v) => v.replace(/\D/g, '');
   const brl = (n) => n.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
   const params = new URLSearchParams(location.search);
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -132,55 +141,11 @@
   });
 
   /* ---------- Validação ---------- */
-  const luhn = (num) => {
-    let sum = 0;
-    let dbl = false;
-    for (let i = num.length - 1; i >= 0; i--) {
-      let d = +num[i];
-      if (dbl) { d *= 2; if (d > 9) d -= 9; }
-      sum += d;
-      dbl = !dbl;
-    }
-    return sum % 10 === 0;
-  };
-  const validCPF = (cpf) => {
-    if (cpf.length !== 11 || /^(\d)\1+$/.test(cpf)) return false;
-    const calc = (len) => {
-      let sum = 0;
-      for (let i = 0; i < len; i++) sum += +cpf[i] * (len + 1 - i);
-      const r = (sum * 10) % 11;
-      return r === 10 ? 0 : r;
-    };
-    return calc(9) === +cpf[9] && calc(10) === +cpf[10];
-  };
-  const validCNPJ = (cnpj) => {
-    if (cnpj.length !== 14 || /^(\d)\1+$/.test(cnpj)) return false;
-    const calc = (len) => {
-      const w = len === 12 ? [5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2] : [6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
-      const sum = w.reduce((acc, wi, i) => acc + wi * +cnpj[i], 0);
-      const r = sum % 11;
-      return r < 2 ? 0 : 11 - r;
-    };
-    return calc(12) === +cnpj[12] && calc(13) === +cnpj[13];
-  };
-
   function isValid(input) {
     const v = input.value.trim();
     const rule = input.dataset.validate;
     if (input.type === 'checkbox') return !input.required || input.checked;
     if (input.type === 'email') return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v);
-    if (rule === 'card') { const d = digits(v); return d.length >= 13 && d.length <= 19 && luhn(d); }
-    if (rule === 'exp') {
-      const m = v.match(/^(\d{2})\/(\d{2})$/);
-      if (!m) return false;
-      const month = +m[1];
-      const year = 2000 + +m[2];
-      if (month < 1 || month > 12) return false;
-      const now = new Date();
-      return year > now.getFullYear() || (year === now.getFullYear() && month >= now.getMonth() + 1);
-    }
-    if (rule === 'cvc') return /^\d{3,4}$/.test(v);
-    if (rule === 'doc') { const d = digits(v); return validCPF(d) || validCNPJ(d); }
     if (rule === 'required' || input.required) {
       const min = +input.getAttribute('minlength') || 1;
       return v.length >= min;
@@ -217,32 +182,6 @@
   });
   document.addEventListener('change', (e) => {
     if (e.target.type === 'checkbox' && e.target.required) setInvalid(e.target, !e.target.checked);
-  });
-
-  /* ---------- Máscaras ---------- */
-  const masks = {
-    card: (v) => {
-      const d = digits(v).slice(0, 19);
-      if (/^3[47]/.test(d)) return d.replace(/^(\d{0,4})(\d{0,6})(\d{0,5}).*/, (_, a, b, c) => [a, b, c].filter(Boolean).join(' '));
-      return d.replace(/(\d{4})(?=\d)/g, '$1 ');
-    },
-    exp: (v) => {
-      const d = digits(v).slice(0, 4);
-      return d.length > 2 ? `${d.slice(0, 2)}/${d.slice(2)}` : d;
-    },
-    cvc: (v) => digits(v).slice(0, 4),
-    doc: (v) => {
-      const d = digits(v).slice(0, 14);
-      if (d.length <= 11) {
-        return d.replace(/(\d{3})(\d)/, '$1.$2').replace(/(\d{3})(\d)/, '$1.$2').replace(/(\d{3})(\d{1,2})$/, '$1-$2');
-      }
-      return d.replace(/^(\d{2})(\d)/, '$1.$2').replace(/^(\d{2})\.(\d{3})(\d)/, '$1.$2.$3')
-        .replace(/\.(\d{3})(\d)/, '.$1/$2').replace(/(\d{4})(\d)/, '$1-$2');
-    },
-  };
-  $$('[data-validate]').forEach((input) => {
-    const mask = masks[input.dataset.validate];
-    if (mask) input.addEventListener('input', () => { input.value = mask(input.value); });
   });
 
   /* ---------- Envio dos formulários ---------- */
@@ -334,17 +273,18 @@
         location.href = `/checkout/?plan=${encodeURIComponent(data.plan)}`;
         return;
       }
-      location.href = '/dashboard/';
+      location.href = '/welcome/?plan=starter';
     });
   }
 
-  /* ---------- Checkout ---------- */
+  /* ---------- Checkout (Stripe) ---------- */
   const coForm = $('#checkout-form');
   if (coForm) {
     let planKey = params.get('plan');
     if (planKey === 'starter') { location.replace('/register/?plan=starter'); return; }
-    if (!PLANS[planKey] || planKey === 'starter') planKey = 'pro';
+    if (!PLANS[planKey]) planKey = 'pro';
     const plan = PLANS[planKey];
+    const session = readSession();
 
     // Resumo
     $$('[data-plan-name], [data-plan-name-inline]').forEach((el) => { el.textContent = plan.name; });
@@ -353,120 +293,85 @@
     $('[data-plan-features]').innerHTML = plan.features.map((f) => `<li>${f}</li>`).join('');
     $('[data-plan-subtotal]').textContent = brl(plan.price);
     $('[data-plan-total]').textContent = brl(plan.price);
-    $$('[data-plan-link]').forEach((a) => {
-      if (a.dataset.planLink === planKey) a.setAttribute('aria-current', 'true');
-    });
-    $('[data-success-text]').textContent = `Seu plano ${plan.name} já está liberado. Bora criar o próximo QR?`;
+    $$('[data-plan-link]').forEach((a) => { if (a.dataset.planLink === planKey) a.setAttribute('aria-current', 'true'); });
+    $('[data-pay-label]').textContent = `Continuar para a Stripe · ${brl(plan.price).replace(',00', '')}/mês`;
     document.title = `Assinar ${plan.name} — SeuQR`;
 
-    // Abas de pagamento
-    const tabs = $$('[role="tab"]', coForm);
-    const payLabel = $('[data-pay-label]');
-    let method = 'card';
-    let pixGenerated = false;
-    const syncPayLabel = () => {
-      if (method === 'card') payLabel.textContent = `Assinar ${plan.name} · ${brl(plan.price).replace(',00', '')}/mês`;
-      else payLabel.textContent = pixGenerated ? 'Já paguei' : 'Gerar código Pix';
-    };
-    const selectTab = (tab) => {
-      tabs.forEach((t) => {
-        const on = t === tab;
-        t.setAttribute('aria-selected', String(on));
-        t.tabIndex = on ? 0 : -1;
-        $(`#${t.getAttribute('aria-controls')}`).hidden = !on;
-      });
-      method = tab.dataset.method;
-      hideAlert(coForm);
-      syncPayLabel();
-    };
-    tabs.forEach((t, i) => {
-      t.addEventListener('click', () => selectTab(t));
-      t.addEventListener('keydown', (e) => {
-        if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
-        const next = tabs[(i + (e.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length];
-        next.focus();
-        selectTab(next);
-      });
-    });
-    syncPayLabel();
+    // Conta (sem sessão, primeiro cria a conta)
+    if (!session) {
+      $('[data-account-name]').textContent = 'Você ainda não entrou';
+      $('[data-account-email]').textContent = 'Crie a conta ou entre para continuar';
+      $('[data-account-initials]').textContent = '?';
+      $('[data-account-change]').textContent = 'Entrar';
+      $('[data-account-change]').href = `/login/?next=${encodeURIComponent(location.pathname + location.search)}`;
+      $('[data-starter-link]').href = '/register/?plan=starter';
+    } else {
+      $('[data-account-name]').textContent = session.name || 'Você';
+      $('[data-account-email]').textContent = session.email || '';
+      $('[data-account-initials]').textContent = (session.name || 'Você').split(/\s+/).slice(0, 2).map((p) => p[0]).join('').toUpperCase();
+      $('[data-account-change]').href = `/register/?plan=${planKey}`;
+    }
 
-    // Prévia do cartão
-    const brandOf = (d) => {
-      if (/^4/.test(d)) return 'Visa';
-      if (/^(5[1-5]|2[2-7])/.test(d)) return 'Mastercard';
-      if (/^3[47]/.test(d)) return 'Amex';
-      if (/^(4011|4312|4389|4514|4576|5041|5066|5067|509|6277|6362|6363|650|6516|6550)/.test(d)) return 'Elo';
-      if (/^(606282|3841)/.test(d)) return 'Hipercard';
-      return 'Cartão';
-    };
-    const num = $('#cc-number');
-    num.addEventListener('input', () => {
-      const d = digits(num.value);
-      $('[data-card-brand]').textContent = brandOf(d);
-      const shown = (d + '•'.repeat(Math.max(16 - d.length, 0))).replace(/(.{4})(?=.)/g, '$1 ');
-      $('[data-card-number]').textContent = shown;
-    });
-    $('#cc-name').addEventListener('input', (e) => { $('[data-card-name]').textContent = e.target.value || 'Seu nome'; });
-    $('#cc-exp').addEventListener('input', (e) => { $('[data-card-exp]').textContent = e.target.value || 'MM/AA'; });
+    if (params.get('canceled')) showAlert(coForm, 'Pagamento cancelado na Stripe. Nada foi cobrado; você pode tentar de novo.', 'info');
 
-    // Envio
-    const finish = () => {
-      $('#checkout-flow').hidden = true;
-      $('#checkout-success').hidden = false;
-      // Demonstração: libera o plano pago na sessão do navegador
-      if (DEMO) {
-        const prev = readSession();
-        const payment = { date: Date.now(), plan: planKey, method, amount: plan.price };
-        saveSession({
-          plan: planKey,
-          payments: [...((prev && prev.payments) || []), payment],
-          ...(prev ? {} : { email: 'voce@empresa.com', name: 'Você' }),
-        });
-      }
-      // Pedido fechado: não oferece mais troca de plano no resumo
-      $('.plan-switch').hidden = true;
-      $('.summary__note').hidden = true;
-      window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
-    };
     coForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       hideAlert(coForm);
-      if (!validate(coForm)) return;
+      if (!session) { location.href = `/register/?plan=${planKey}`; return; }
       setLoading(coForm, true);
+      $('[data-pay-label]').textContent = 'Abrindo a Stripe…';
       try {
-        if (method === 'pix' && !pixGenerated) {
-          // Em produção: o backend cria a cobrança Pix no gateway e devolve o "copia e cola"
-          await sleep(700);
-          const code = `00020126-DEMO-SEUQR-${planKey.toUpperCase()}-${Date.now().toString(36).toUpperCase()}`;
-          $('#pix-code').value = code;
-          renderQR($('#pix-qr'), code);
-          $('#pix-box').hidden = false;
-          pixGenerated = true;
-          syncPayLabel();
+        // Opção B: Payment Link da Stripe (e-mail e conta já preenchidos)
+        const link = STRIPE.paymentLinks[planKey];
+        if (!DEMO && link) {
+          const url = new URL(link);
+          if (session.email) url.searchParams.set('prefilled_email', session.email);
+          url.searchParams.set('client_reference_id', session.id || session.email || 'seuqr');
+          location.href = url.toString();
           return;
         }
-        const data = Object.fromEntries(new FormData(coForm));
-        // Nunca enviar número/CVV do cartão para a nossa API: usar o token do gateway
-        const payload = { plan: planKey, method, doc: digits(method === 'card' ? data.doc : data['doc-pix']) };
-        const result = await submitTo(coForm.dataset.endpoint, payload);
-        if (result.ok) finish();
+        // Opção A: Checkout Session criada pelo backend
+        if (!DEMO) {
+          const res = await submitTo(STRIPE.checkoutEndpoint, { plan: planKey });
+          if (!res.url) throw new Error('Não foi possível abrir o pagamento agora. Tente de novo.');
+          location.href = res.url;
+          return;
+        }
+        // Demonstração: simula a ida e a volta da Stripe
+        await sleep(1100);
+        const prev = readSession();
+        saveSession({
+          plan: planKey,
+          payments: [...((prev && prev.payments) || []), { date: Date.now(), plan: planKey, method: 'stripe', amount: plan.price }],
+        });
+        location.href = `/welcome/?plan=${planKey}&paid=1`;
       } catch (err) {
         showAlert(coForm, err.message, 'error');
-      } finally {
+        $('[data-pay-label]').textContent = `Continuar para a Stripe · ${brl(plan.price).replace(',00', '')}/mês`;
         setLoading(coForm, false);
       }
     });
+  }
 
-    $('#pix-copy').addEventListener('click', async (e) => {
-      const btn = e.currentTarget;
-      try {
-        await navigator.clipboard.writeText($('#pix-code').value);
-        btn.textContent = 'Copiado!';
-      } catch {
-        $('#pix-code').select();
-        btn.textContent = 'Selecionado';
-      }
-      setTimeout(() => { btn.textContent = 'Copiar'; }, 1800);
-    });
+  /* ---------- Boas-vindas (depois do cadastro ou da Stripe) ---------- */
+  if (document.body.classList.contains('welcome-page')) {
+    const session = readSession() || {};
+    const paid = params.get('paid') === '1';
+    const key = PLANS[params.get('plan')] ? params.get('plan') : (session.plan || 'starter');
+    const plan = PLANS[key];
+    const first = (session.name || '').split(' ')[0];
+    $('[data-welcome-plan]').textContent = `Plano ${plan.name}`;
+    if (paid) {
+      $('[data-welcome-title]').textContent = 'Assinatura ativada!';
+      $('[data-welcome-text]').textContent = `${first ? `${first}, seu` : 'Seu'} plano ${plan.name} já está liberado: QR Codes ilimitados para as suas campanhas.`;
+      $('[data-welcome-stripe]').hidden = false;
+      document.title = 'Assinatura ativada — SeuQR';
+    } else {
+      $('[data-welcome-title]').textContent = first ? `Conta criada, ${first}!` : 'Conta criada!';
+      $('[data-welcome-text]').textContent = 'Bem-vindo ao SeuQR. Seu plano Starter já está ativo, com até 3 QR Codes dinâmicos.';
+      // Grátis não passa pelo pagamento
+      $('[data-step-pay]').remove();
+      $('[data-step-pay-line]').remove();
+    }
   }
 })();
