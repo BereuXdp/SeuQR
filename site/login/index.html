@@ -23,6 +23,7 @@
       <div class="auth-main">
         <h1>Bem-vindo de volta</h1>
         <p>Entre para gerenciar seus QR Codes e campanhas.</p>
+        <p class="demo-hint">Modo demonstração: use qualquer e-mail e qualquer senha.</p>
 
         <form class="form" id="login-form" data-endpoint="/api/auth/login" novalidate>
           <div class="form-alert" role="alert"></div>
@@ -36,7 +37,7 @@
           <div class="f-group">
             <label class="f-label" for="password">Senha <a href="/recuperar-senha" class="link">Esqueceu a senha?</a></label>
             <div class="f-control f-control--pw">
-              <input class="f-input" id="password" name="password" type="password" autocomplete="current-password" placeholder="Sua senha" required minlength="6">
+              <input class="f-input" id="password" name="password" type="password" autocomplete="current-password" placeholder="Sua senha" required>
               <button type="button" class="f-toggle" data-toggle-pw aria-label="Mostrar senha">
                 <svg viewBox="0 0 24 24"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/></svg>
               </button>

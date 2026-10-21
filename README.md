@@ -13,6 +13,10 @@ site/                 Site estático (HTML, CSS e JS puro, sem build)
   register/           Tela de cadastro        (/register?plan=pro)
   checkout/           Pagamento cartão / Pix  (/checkout/?plan=pro)
   auth.css, auth.js   Estilos e lógica compartilhados das telas acima
+  dashboard/          Área logada: QR Codes   (/dashboard)
+  billing/            Área logada: plano e pagamentos (/billing)
+  settings/           Área logada: perfil, senha, sair (/settings)
+  dashboard.css/.js   Estilos e lógica da área logada
   assets/             Logo, favicon e ícones usados pelo site
 logo/                 Identidade visual
   svg/, png/          Logo, símbolo, app icon e favicons
@@ -37,4 +41,11 @@ Login, cadastro e checkout **ainda não enviam dados**: o envio é simulado.
 - Cada formulário tem o endpoint em `data-endpoint` (`/api/auth/login`, `/api/auth/register`, `/api/billing/subscribe`).
 - Pagamento: os dados do cartão **não devem ir para a nossa API** — use a tokenização do gateway escolhido e envie só o token. O gateway ainda não foi definido.
 
-Links que ainda não têm página: `/dashboard`, `/recuperar-senha`, `/termos`, `/privacidade`.
+### Modo demonstração
+
+- O login aceita **qualquer e-mail e qualquer senha** e cria uma sessão só no navegador (`localStorage`, chave `seuqr.session`).
+- A área logada (`/dashboard`, `/billing`, `/settings`) redireciona para o login sem sessão.
+- QR Codes, plano e pagamentos de teste ficam salvos no navegador (`seuqr.qrs:<email>`). Em Configurações dá para sair ou apagar esses dados.
+- Ao ligar no backend, troque as funções de leitura/gravação de `dashboard.js` por chamadas à API.
+
+Links que ainda não têm página: `/recuperar-senha`, `/termos`, `/privacidade`.

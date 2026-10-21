@@ -429,3 +429,12 @@ body.app { background: var(--tint); min-height: 100vh; }
 .f-fieldset legend { margin-bottom: 7px; padding: 0; }
 
 .summary .plan-switch[hidden] { display: none; }
+
+.demo-hint {
+  margin-top: 14px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: #eaf1ff;
+  color: #1d4aa8;
+  font-size: 14px;
+}

@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Painel — SeuQR</title>
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#101c42">
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="/auth.css">
+  <link rel="stylesheet" href="/dashboard.css">
+  <script>
+    // Sem sessão: volta para o login antes de mostrar o painel
+    try { if (!localStorage.getItem('seuqr.session')) location.replace('/login/?next=/dashboard/'); } catch (e) { location.replace('/login/'); }
+  </script>
+</head>
+<body class="app dash" data-page="qrs">
+  <aside class="dash-side" data-side></aside>
+
+  <main class="dash-main">
+    <div class="dash-demo">Modo demonstração: os dados ficam salvos só neste navegador.</div>
+
+    <header class="dash-head">
+      <div>
+        <span class="eyebrow">Painel</span>
+        <h1>Olá, <span data-user-first>você</span></h1>
+      </div>
+      <button type="button" class="btn btn--dark btn--lg" data-new-qr>
+        <svg viewBox="0 0 24 24" aria-hidden="true" class="ico"><path d="M12 5v14M5 12h14"/></svg>
+        Novo QR Code
+      </button>
+    </header>
+
+    <section class="dash-stats" aria-label="Resumo">
+      <div class="dash-stat"><small>QR Codes ativos</small><strong data-stat="active">0</strong></div>
+      <div class="dash-stat"><small>Scans hoje</small><strong data-stat="today">0</strong></div>
+      <div class="dash-stat"><small>Scans nos últimos 7 dias</small><strong data-stat="week">0</strong></div>
+      <div class="dash-stat"><small>Total de scans</small><strong data-stat="total">0</strong></div>
+    </section>
+
+    <section aria-labelledby="qr-title">
+      <div class="dash-toolbar">
+        <h2 id="qr-title">Seus QR Codes</h2>
+        <label class="dash-search">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.2-4.2"/></svg>
+          <input type="search" placeholder="Buscar por nome ou destino" data-search aria-label="Buscar QR Codes">
+        </label>
+      </div>
+      <div class="qr-grid" data-qr-list></div>
+      <div class="dash-empty" data-empty hidden>
+        <strong>Nenhum QR Code por aqui</strong>
+        <p>Crie o primeiro e mude o destino quando quiser.</p>
+        <button type="button" class="btn btn--dark" data-new-qr>Criar QR Code</button>
+      </div>
+    </section>
+  </main>
+
+  <!-- Criar QR -->
+  <dialog class="dash-modal" data-modal aria-labelledby="modal-title">
+    <form method="dialog" class="dash-modal__box" data-create-form novalidate>
+      <div class="dash-modal__head">
+        <h2 id="modal-title">Novo QR Code</h2>
+        <button type="button" class="dash-x" data-close aria-label="Fechar"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+      </div>
+      <div class="form" style="margin-top:20px">
+        <div class="f-group">
+          <label class="f-label" for="qr-name">Nome</label>
+          <input class="f-input" id="qr-name" name="name" placeholder="Ex.: Cardápio — Unidade Centro" required>
+          <span class="f-error">Dê um nome para o QR.</span>
+        </div>
+        <div class="f-group">
+          <label class="f-label" for="qr-slug">Link fixo do QR</label>
+          <div class="slug-field"><span class="mono">seuqr.com/q/</span><input class="f-input mono" id="qr-slug" name="slug" placeholder="menu-centro" required pattern="[a-z0-9-]{2,40}"></div>
+          <span class="f-hint">Esse endereço fica impresso e não muda.</span>
+          <span class="f-error" data-slug-error>Use de 2 a 40 letras minúsculas, números ou hífen.</span>
+        </div>
+        <div class="f-group">
+          <label class="f-label" for="qr-dest">Destino</label>
+          <input class="f-input mono" id="qr-dest" name="dest" placeholder="cardapio.com/almoco" required>
+          <span class="f-hint">Pode trocar depois sem reimprimir.</span>
+          <span class="f-error">Informe para onde o QR deve levar.</span>
+        </div>
+        <div class="form-alert form-alert--info" data-limit-alert></div>
+        <button type="submit" class="btn btn--dark btn--submit"><span class="btn__label">Criar QR Code</span></button>
+      </div>
+    </form>
+  </dialog>
+
+  <div class="dash-toast" role="status" data-toast></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js" defer></script>
+  <script src="/dashboard.js" defer></script>
+</body>
+</html>

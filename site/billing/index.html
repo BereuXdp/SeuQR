@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Faturamento — SeuQR</title>
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#101c42">
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="/auth.css">
+  <link rel="stylesheet" href="/dashboard.css">
+  <script>
+    try { if (!localStorage.getItem('seuqr.session')) location.replace('/login/?next=/billing/'); } catch (e) { location.replace('/login/'); }
+  </script>
+</head>
+<body class="app dash" data-page="billing">
+  <aside class="dash-side" data-side></aside>
+
+  <main class="dash-main">
+    <div class="dash-demo">Modo demonstração: nenhuma cobrança real é feita.</div>
+
+    <header class="dash-head">
+      <div>
+        <span class="eyebrow">Faturamento</span>
+        <h1>Plano e pagamentos</h1>
+      </div>
+    </header>
+
+    <div class="panel-grid">
+      <section class="current-plan" aria-labelledby="cur-plan">
+        <span class="eyebrow">Plano atual</span>
+        <h2 id="cur-plan" data-cur-name>Starter</h2>
+        <p class="current-plan__price" data-cur-price>Grátis</p>
+        <ul class="summary__list" data-cur-features></ul>
+        <div class="current-plan__usage">
+          <div class="dash-plan__bar"><i data-cur-bar></i></div>
+          <small data-cur-usage>0 de 3 QR Codes usados</small>
+        </div>
+      </section>
+
+      <section class="panel" aria-labelledby="change-plan">
+        <h2 id="change-plan">Trocar de plano</h2>
+        <p>Faça upgrade quando a operação pedir.</p>
+        <div class="plan-rows" data-plan-rows></div>
+      </section>
+    </div>
+
+    <section class="panel" style="margin-top:16px" aria-labelledby="hist">
+      <h2 id="hist">Histórico de pagamentos</h2>
+      <p>Pagamentos feitos pelo checkout aparecem aqui.</p>
+      <table class="history" data-history hidden>
+        <thead><tr><th>Data</th><th>Plano</th><th>Forma</th><th>Valor</th></tr></thead>
+        <tbody></tbody>
+      </table>
+      <div class="history-empty" data-history-empty>Nenhum pagamento ainda. Você está no plano grátis.</div>
+    </section>
+  </main>
+
+  <div class="dash-toast" role="status" data-toast></div>
+  <script src="/dashboard.js" defer></script>
+</body>
+</html>

@@ -277,15 +277,38 @@
     });
   }
 
+  /* ---------- Sessão de demonstração (só neste navegador) ---------- */
+  const SESSION_KEY = 'seuqr.session';
+  const readSession = () => {
+    try { return JSON.parse(localStorage.getItem(SESSION_KEY)) || null; } catch { return null; }
+  };
+  const saveSession = (data) => {
+    try { localStorage.setItem(SESSION_KEY, JSON.stringify({ ...readSession(), ...data, at: Date.now() })); } catch { /* navegador sem storage */ }
+  };
+  const nameFromEmail = (email) => {
+    const base = (email || '').split('@')[0].replace(/[._-]+/g, ' ').trim();
+    return base ? base.replace(/\b\w/g, (l) => l.toUpperCase()) : 'Você';
+  };
+  // Só aceita caminhos internos em ?next= (evita redirecionar para outro site)
+  const nextPath = () => {
+    const n = params.get('next');
+    return n && n.startsWith('/') && !n.startsWith('//') ? n : '/dashboard/';
+  };
+
   /* ---------- Login ---------- */
   const loginForm = $('#login-form');
   if (loginForm) {
-    handle(loginForm, async (result) => {
+    handle(loginForm, async (result, data) => {
       if (result.demo) {
-        showAlert(loginForm, 'Login de demonstração: os dados estão válidos. Ligue o formulário na API em auth.js para entrar de verdade.');
-        return;
+        // Demonstração: qualquer e-mail e senha entram
+        const prev = readSession();
+        saveSession({
+          email: data.email,
+          name: prev && prev.email === data.email ? prev.name : nameFromEmail(data.email),
+          plan: prev && prev.email === data.email ? prev.plan : 'starter',
+        });
       }
-      location.href = '/dashboard';
+      location.href = nextPath();
     });
   }
 
@@ -305,15 +328,13 @@
     syncLabel();
 
     handle(regForm, async (result, data) => {
+      // A conta começa no Starter; o plano pago só vale depois do pagamento
+      if (result.demo) saveSession({ email: data.email, name: data.name.trim() || nameFromEmail(data.email), plan: 'starter' });
       if (data.plan !== 'starter') {
         location.href = `/checkout/?plan=${encodeURIComponent(data.plan)}`;
         return;
       }
-      if (result.demo) {
-        showAlert(regForm, 'Conta criada (demonstração). Ligue o formulário na API em auth.js para criar contas de verdade.');
-        return;
-      }
-      location.href = '/dashboard';
+      location.href = '/dashboard/';
     });
   }
 
@@ -392,6 +413,16 @@
     const finish = () => {
       $('#checkout-flow').hidden = true;
       $('#checkout-success').hidden = false;
+      // Demonstração: libera o plano pago na sessão do navegador
+      if (DEMO) {
+        const prev = readSession();
+        const payment = { date: Date.now(), plan: planKey, method, amount: plan.price };
+        saveSession({
+          plan: planKey,
+          payments: [...((prev && prev.payments) || []), payment],
+          ...(prev ? {} : { email: 'voce@empresa.com', name: 'Você' }),
+        });
+      }
       // Pedido fechado: não oferece mais troca de plano no resumo
       $('.plan-switch').hidden = true;
       $('.summary__note').hidden = true;

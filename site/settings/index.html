@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Configurações — SeuQR</title>
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#101c42">
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="/auth.css">
+  <link rel="stylesheet" href="/dashboard.css">
+  <script>
+    try { if (!localStorage.getItem('seuqr.session')) location.replace('/login/?next=/settings/'); } catch (e) { location.replace('/login/'); }
+  </script>
+</head>
+<body class="app dash" data-page="settings">
+  <aside class="dash-side" data-side></aside>
+
+  <main class="dash-main">
+    <div class="dash-demo">Modo demonstração: as alterações ficam salvas só neste navegador.</div>
+
+    <header class="dash-head">
+      <div>
+        <span class="eyebrow">Configurações</span>
+        <h1>Sua conta</h1>
+      </div>
+    </header>
+
+    <section class="panel" style="margin-top:28px" aria-labelledby="perfil">
+      <h2 id="perfil">Perfil</h2>
+      <p>Nome e e-mail usados no painel.</p>
+      <form class="settings-form" data-profile-form novalidate>
+        <div class="f-group">
+          <label class="f-label" for="set-name">Nome</label>
+          <input class="f-input" id="set-name" name="name" autocomplete="name" required minlength="2">
+          <span class="f-error">Digite seu nome.</span>
+        </div>
+        <div class="f-group">
+          <label class="f-label" for="set-email">E-mail</label>
+          <input class="f-input" id="set-email" name="email" type="email" autocomplete="email" required>
+          <span class="f-error">Digite um e-mail válido.</span>
+        </div>
+        <div class="settings-actions"><button type="submit" class="btn btn--dark">Salvar alterações</button></div>
+      </form>
+    </section>
+
+    <section class="panel" aria-labelledby="senha">
+      <h2 id="senha">Senha</h2>
+      <p>No modo demonstração qualquer senha funciona; aqui só validamos o formulário.</p>
+      <form class="settings-form" data-password-form novalidate>
+        <div class="f-group">
+          <label class="f-label" for="set-pw-new">Nova senha</label>
+          <input class="f-input" id="set-pw-new" name="password" type="password" autocomplete="new-password" required minlength="8">
+          <span class="f-error">Use pelo menos 8 caracteres.</span>
+        </div>
+        <div class="f-group">
+          <label class="f-label" for="set-pw-confirm">Confirmar nova senha</label>
+          <input class="f-input" id="set-pw-confirm" name="confirm" type="password" autocomplete="new-password" required minlength="8">
+          <span class="f-error" data-confirm-error>As senhas não conferem.</span>
+        </div>
+        <div class="settings-actions"><button type="submit" class="btn btn--outline">Atualizar senha</button></div>
+      </form>
+    </section>
+
+    <section class="panel danger-zone" aria-labelledby="zona">
+      <h2 id="zona">Sair e limpar dados</h2>
+      <p>Encerre a sessão ou apague os QR Codes e o plano de demonstração deste navegador.</p>
+      <div class="settings-actions" style="margin-top:18px">
+        <button type="button" class="btn btn--outline" data-logout>Sair da conta</button>
+        <button type="button" class="btn btn--danger" data-reset>Apagar dados de demonstração</button>
+      </div>
+    </section>
+  </main>
+
+  <div class="dash-toast" role="status" data-toast></div>
+  <script src="/dashboard.js" defer></script>
+</body>
+</html>
