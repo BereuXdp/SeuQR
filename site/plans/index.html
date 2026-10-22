@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Planos — SeuQR</title>
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#101c42">
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="/auth.css">
+  <link rel="stylesheet" href="/dashboard.css">
+  <script>
+    try { if (!localStorage.getItem('seuqr.session')) location.replace('/login/?next=/plans/'); } catch (e) { location.replace('/login/'); }
+  </script>
+</head>
+<body class="app dash" data-page="plans">
+  <aside class="dash-side" data-side></aside>
+
+  <main class="dash-main">
+    <div class="dash-demo">Modo demonstração: nenhuma cobrança real é feita.</div>
+
+    <header class="dash-head">
+      <div>
+        <span class="eyebrow">Planos</span>
+        <h1>Escolha o plano ideal</h1>
+        <p class="dash-sub">Comece no grátis, valide o uso e suba para planos pagos conforme suas campanhas crescerem.</p>
+      </div>
+    </header>
+
+    <div class="plans dash-plans" data-plans>
+      <article class="plan" data-plan="starter">
+        <span class="plan__name mono">Starter</span>
+        <div class="plan__price"><strong>R$ 0</strong></div>
+        <p class="plan__desc">Comece com QR Codes dinâmicos e teste o fluxo completo.</p>
+        <a class="btn btn--outline btn--block" data-plan-cta>Plano atual</a>
+        <ul class="plan__list"><li>Até 3 QR Codes</li><li>Redirecionamento dinâmico</li><li>Estatísticas básicas</li></ul>
+      </article>
+      <article class="plan plan--featured" data-plan="pro">
+        <span class="plan__badge">Mais popular</span>
+        <span class="plan__name mono">Pro</span>
+        <div class="plan__price"><strong>R$ 49</strong><span>/mês</span></div>
+        <p class="plan__desc">Para negócios que precisam editar campanhas em tempo real.</p>
+        <a class="btn btn--light btn--block" data-plan-cta>Fazer upgrade</a>
+        <ul class="plan__list"><li>QR Codes ilimitados</li><li>Estatísticas avançadas</li><li>Prioridade no suporte</li></ul>
+      </article>
+      <article class="plan" data-plan="business">
+        <span class="plan__name mono">Business</span>
+        <div class="plan__price"><strong>R$ 149</strong><span>/mês</span></div>
+        <p class="plan__desc">Governança, times e mais previsibilidade para operações maiores.</p>
+        <a class="btn btn--outline btn--block" data-plan-cta>Fazer upgrade</a>
+        <ul class="plan__list"><li>Tudo do Pro</li><li>Múltiplos usuários</li><li>Insights personalizados</li></ul>
+      </article>
+    </div>
+    <p class="dash-plans__note">Pagamentos processados pela Stripe. Para ver faturas e o plano atual, abra o <a href="/billing/" class="link">Billing</a>.</p>
+  </main>
+
+  <div class="dash-toast" role="status" data-toast></div>
+  <script src="/dashboard.js" defer></script>
+</body>
+</html>

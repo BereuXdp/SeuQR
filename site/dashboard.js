@@ -73,7 +73,7 @@
   const ICON = {
     overview: '<rect x="3.5" y="3.5" width="7" height="9" rx="2"/><rect x="13.5" y="3.5" width="7" height="5" rx="2"/><rect x="13.5" y="11.5" width="7" height="9" rx="2"/><rect x="3.5" y="15.5" width="7" height="5" rx="2"/>',
     qrs: '<rect x="3.5" y="3.5" width="7" height="7" rx="2"/><rect x="13.5" y="3.5" width="7" height="7" rx="2"/><rect x="3.5" y="13.5" width="7" height="7" rx="2"/><path d="M14 14h2.5v2.5H14zM18 18h2.5v2.5H18z"/>',
-    pricing: '<path d="M3 12V4h8l10 10-8 8z"/><circle cx="7.5" cy="8.5" r="1.5"/>',
+    plans: '<path d="M3 12V4h8l10 10-8 8z"/><circle cx="7.5" cy="8.5" r="1.5"/>',
     billing: '<rect x="2.5" y="5" width="19" height="14" rx="3"/><path d="M2.5 10h19M6.5 15h4"/>',
     settings: '<circle cx="12" cy="12" r="3"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1"/>',
   };
@@ -93,7 +93,7 @@
       <nav class="dash-nav" aria-label="Painel">
         ${link('overview', '/dashboard/', 'Dashboard')}
         ${link('qrs', '/qrcodes/', 'QR Codes')}
-        ${link('pricing', '/pricing/', 'Planos')}
+        ${link('plans', '/plans/', 'Planos')}
         ${link('billing', '/billing/', 'Billing')}
         ${link('settings', '/settings/', 'Configurações')}
       </nav>
@@ -460,6 +460,32 @@
           <td>${brl(x.amount)}</td>
         </tr>`).join('');
     }
+  }
+
+  /* =========================================================
+     Planos (dentro do painel, sem sair da área logada)
+     ========================================================= */
+  if (page === 'plans') {
+    const currentKey = PLANS[session.plan] ? session.plan : 'starter';
+    $$('[data-plan]').forEach((card) => {
+      const key = card.dataset.plan;
+      const cta = $('[data-plan-cta]', card);
+      const info = PLANS[key];
+      if (key === currentKey) {
+        cta.textContent = 'Plano atual';
+        cta.removeAttribute('href');
+        cta.setAttribute('aria-disabled', 'true');
+        cta.classList.add('is-current');
+        card.classList.add('is-current');
+      } else if (info.price > plan().price) {
+        cta.textContent = 'Fazer upgrade';
+        cta.href = `/checkout/?plan=${key}`;
+      } else {
+        // Plano mais barato: a troca é feita no Billing
+        cta.textContent = key === 'starter' ? 'Voltar ao Starter' : `Mudar para ${info.name}`;
+        cta.href = '/billing/';
+      }
+    });
   }
 
   /* =========================================================
